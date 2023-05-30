@@ -1,6 +1,6 @@
 package com.example.productsample.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,17 +10,15 @@ import lombok.*;
 @Table(name="product_option")
 public class ProductOption {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long oid;
 
     private String size;
+
+    private long pid;
 
     private int qty;
 
     private int price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="pid")
-    @JsonBackReference
-    public Product product;
 }

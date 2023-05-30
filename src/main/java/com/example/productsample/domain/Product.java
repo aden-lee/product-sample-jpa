@@ -1,12 +1,10 @@
 package com.example.productsample.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +13,7 @@ import java.util.List;
 @Entity
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long pid;
 
     private String proName;
@@ -31,6 +29,6 @@ public class Product {
     private String updated;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductOption> productOptions = new ArrayList<>();
+    private List<Option> options = new ArrayList<>();
 
 }

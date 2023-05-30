@@ -1,30 +1,28 @@
 package com.example.productsample.repository;
 
+import com.example.productsample.domain.Option;
 import com.example.productsample.domain.Product;
-import com.example.productsample.domain.ProductOption;
 
-import org.springframework.data.domain.PageRequest;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
     Optional<Product> findByProName(String pName);
 
-//    @Query("SELECT distinct p FROM Product p join fetch p.productOption")
-//    public List<Product> findAllWithProductOptionUsingFetchJoin(Pageable pageable);
+    List<Product> findAllByProNameOrCreatedBetween(Specification<Product> productSpecification, String startCreated, String endCreated, Pageable pageable);
 
-//    @Query("SELECT distinct p FROM Product p inner join ProductOption o on p.pid= o.pid where p.proName=:proName or p.created between :startCreated and :endCreated or o.qty between :price1 and :price2")
-//    List<Product> findAllByProNameOrCreatedBetween(String proName, String startCreated, String endCreated, int price1, int price2, Pageable pageable);
+    Page<Product> findAll(Specification<Product> productSpecification, Pageable pageable);
 
-//    @Query("SELECT distinct p FROM Product p join fetch p.productOptions")
-//    List<Product> findAllByProNameOrCreatedBetween(String proName, String startCreated, String endCreated, Pageable pageable);
-
-    List<Product> findAllByProNameOrCreatedBetween(String proName, String startCreated, String endCreated, Pageable pageable);
+    @Query("select p , o from Product p left join p.options o where o.price between :price1 and :price2")
+    List<Product> getProductWithOption();
 }

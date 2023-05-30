@@ -11,6 +11,8 @@ import com.example.productsample.dto.ProductResponse;
 import com.example.productsample.repository.ProductOptionRepository;
 import com.example.productsample.repository.ProductRepository;
 import com.example.productsample.service.ProductService;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
@@ -40,22 +42,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Object getAllProduct(String proName, String startCreated, String endCreated, Integer qty, List<Integer> price, int page, int size) throws Exception {
+    public Object getAllProduct(String proName, String startCreated, String endCreated, Integer qty, List<Integer> priceList, int page, int size) throws Exception {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return productRepository.findAll(searchWith(proName, startCreated, endCreated), pageRequest);
+        return productRepository.findAll(searchWith(proName, startCreated, endCreated, qty, priceList), pageRequest);
         // return productRepository.findAllWithProductOptionUsingFetchJoin(pageRequest);
     }
 
-    public static Specification<Product> searchWith(final String proName, final String startDate, final String endDate) {
+    public static Specification<Product> searchWith(final String proName, final String startDate, final String endDate, Integer qty, List<Integer> priceList) {
         return ((root, query, builder) -> {
+            CriteriaQuery<Object[]> cq = builder.createQuery(Object[].class);
+            Join<Product, Option> productOption = root.join("options");
             List<Predicate> predicates = new ArrayList<>();
             if (StringUtils.isNotEmpty(proName)) {
                 predicates.add(builder.like(root.get("proName"), "%" + proName + "%"));
             }
             if(StringUtils.isNotEmpty(startDate) && StringUtils.isNotEmpty(endDate)) {
-                builder.between(root.get("created"), startDate, endDate);
+                predicates.add(builder.between(root.get("created"), startDate, endDate));
             }
-            return builder.and(predicates.toArray(new Predicate[0]));
+            if(Objects.nonNull(priceList) && priceList.get(0) > 0 && priceList.get(1) > 0) {
+                predicates.add(builder.between(productOption.get("price"), priceList.get(0), priceList.get(1)));
+            }
+            if(Objects.nonNull(qty) && qty > 0) {
+                predicates.add(builder.ge(productOption.get("qty"), qty));
+            }
+            return builder.or(predicates.toArray(new Predicate[0]));
         });
     }
 

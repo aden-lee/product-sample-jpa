@@ -23,6 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 
     Page<Product> findAll(Specification<Product> productSpecification, Pageable pageable);
 
-    @Query("select p , o from Product p left join p.options o where o.price between :price1 and :price2")
-    List<Product> getProductWithOption();
+    @Query("select p from Product p join fetch p.options o")
+    List<Product> getProductWithOption(Specification<Product> productSpecification, Pageable pageable);
 }

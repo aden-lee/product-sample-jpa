@@ -28,7 +28,8 @@ public class Product {
     @UpdateTimestamp
     private String updated;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany
+    @JoinColumn(name="pid")
     private List<Option> options = new ArrayList<>();
 
 }

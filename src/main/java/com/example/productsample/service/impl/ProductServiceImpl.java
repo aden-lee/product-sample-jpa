@@ -42,6 +42,12 @@ public class ProductServiceImpl implements ProductService {
     //제품 검색조건으로 검색
     @Override
     public Object getAllProduct(String proName, String startCreated, String endCreated, Integer qty, List<Integer> priceList, int page, int size) throws Exception {
+        if (priceList == null) {
+            priceList = new ArrayList<>();
+        }
+        if (priceList.size() > 2) {
+            throw new CustomException(ErrorCode.INVALID_PARAM, "가격");
+        }
         PageRequest pageRequest = PageRequest.of(page, size);
         return productRepository.findAll(searchWith(proName, startCreated, endCreated, qty, priceList), pageRequest);
     }

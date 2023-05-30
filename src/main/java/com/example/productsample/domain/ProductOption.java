@@ -24,4 +24,14 @@ public class ProductOption {
 
     private int price; // 제품가격
 
+    public ProductOption () {}
+
+    @Builder
+    public ProductOption (long pid, long oid, String size, int qty, int price) {
+        this.pid = pid;
+        this.oid = oid;
+        this.size = size;
+        this.qty = qty;
+        this.price = price;
+    }
 }

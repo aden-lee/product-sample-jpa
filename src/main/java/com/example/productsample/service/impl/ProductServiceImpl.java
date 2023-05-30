@@ -97,11 +97,11 @@ public class ProductServiceImpl implements ProductService {
 
     private void setProductInfo(Product product, ProductRequest request) throws Exception {
         if (StringUtils.isEmpty(request.getProName())) { // 제품이름이 비어있는경우 에러리턴
-            throw new CustomException(ErrorCode.INVALID_PARAM, "Product name");
+            throw new CustomException(ErrorCode.INVALID_PARAM, "상품명");
         }
 
         if (StringUtils.isEmpty(request.getProDesc())) { // 제품 설명이 없는 경우 에러리턴
-            throw new CustomException(ErrorCode.INVALID_PARAM, "Product description");
+            throw new CustomException(ErrorCode.INVALID_PARAM, "상품 설명");
         }
 
         Optional<Product> productResult = productRepository.findByProName(request.getProName()); // 제품이름으로 검색

@@ -6,7 +6,7 @@ server:
 
 spring:
   application:
-    name: example-api
+    name: example-api-jpa
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -33,6 +33,10 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
 
 springdoc:
   api-docs:
@@ -49,3 +53,8 @@ springdoc:
   default-produces-media-type: application/json;charset=UTF-8
   cache:
     disabled: true
+
+logging:
+  level:
+    org:
+      springframework: debug

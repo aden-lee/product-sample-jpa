@@ -15,6 +15,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -37,7 +39,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Object getAllProduct(String proName, String startCreated, String endCreated, Integer qty, List<Integer> price, int page, int size) throws Exception {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return productOptionRepository.findAllWithProductUsingFetchJoin();
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        return productRepository.findAllByProNameOrCreatedBetween(proName, startCreated, endCreated, pageRequest);
+        // return productRepository.findAllWithProductOptionUsingFetchJoin(pageRequest);
     }
 
     @Override
@@ -79,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
         request.getOpt().forEach(opt -> {
             validationOption(opt);
             ProductOption productOption = new ProductOption();
-            productOption.setPid(pid);
+            //productOption.setPid(pid);
             productOption.setSize(opt.getSize());
             productOption.setQty(opt.getQty());
             productOption.setPrice(opt.getPrice());

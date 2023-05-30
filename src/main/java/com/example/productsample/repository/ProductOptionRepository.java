@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface ProductOptionRepository extends JpaRepository<ProductOption, Integer> {
-    @Query("select g from ProductOption g join fetch g.product")
-    public List<Product> findAllWithProductUsingFetchJoin();
+//    @Query("select DISTINCT g from ProductOption g join fetch g.product")
+//    public List<Product> findByOidAndAndProduct();
 }

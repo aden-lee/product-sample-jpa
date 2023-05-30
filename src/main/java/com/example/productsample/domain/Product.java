@@ -1,6 +1,7 @@
 package com.example.productsample.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long pid;
 
     private String proName;
@@ -28,5 +29,8 @@ public class Product {
 
     @UpdateTimestamp
     private String updated;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductOption> productOptions = new ArrayList<>();
 
 }

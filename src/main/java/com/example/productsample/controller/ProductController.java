@@ -28,7 +28,7 @@ public class ProductController {
             @DateTimeFormat(pattern = "yyyy/MM/dd") @Parameter(description = "등록일자 종료", example = "2023/05/26") @RequestParam(value = "endCreated", required = false) String endCreated,
             @Parameter(description = "재고", example = "50") @RequestParam(value = "qty", required = false) Integer qty,
             @Parameter(description = "가격", example = "[30000,40000]") @RequestParam(value = "price", required = false) List<Integer> price,
-            @Parameter(description = "페이지", example = "1") @RequestParam(value = "page") int page,
+            @Parameter(description = "페이지", example = "0") @RequestParam(value = "page") int page,
             @Parameter(description = "사이즈", example = "10") @RequestParam(value = "size") int size) throws Exception {
         return productService.getAllProduct(proName, startCreated, endCreated, qty, price, page, size);
     }

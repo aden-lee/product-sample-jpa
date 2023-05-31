@@ -1,4 +1,4 @@
-CREATE TABLE `company` (
+CREATE TABLE IF NOT EXISTS `company` (
        `cid` INT(11) NOT NULL AUTO_INCREMENT COMMENT '업체 코드',
        `companyName` VARCHAR(30) NULL DEFAULT NULL COMMENT '상호',
        `fee` DECIMAL(10,2) NULL DEFAULT NULL COMMENT '수수료율',
@@ -7,7 +7,7 @@ CREATE TABLE `company` (
        PRIMARY KEY (`cid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `product` (
+CREATE TABLE IF NOT EXISTS `product` (
        `pid` INT(11) NOT NULL AUTO_INCREMENT COMMENT '상품번호',
        `proName` VARCHAR(100) NULL DEFAULT NULL COMMENT '상품명',
        `proDesc` TEXT NULL DEFAULT NULL COMMENT '상품설명',
@@ -19,7 +19,7 @@ CREATE TABLE `product` (
        CONSTRAINT `FK_product_company` FOREIGN KEY (`cid`) REFERENCES `company` (`cid`) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `product_option` (
+CREATE TABLE IF NOT EXISTS `product_option` (
       `oid` INT(11) NOT NULL AUTO_INCREMENT,
       `pid` INT(11) NOT NULL DEFAULT 0,
       `size` VARCHAR(10) NULL DEFAULT '' COMMENT '사이즈',
